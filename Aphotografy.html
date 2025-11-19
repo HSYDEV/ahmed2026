@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>أبو فهمي للمقاولات — معرض صور وفيديو</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#ff7a18; --muted:#9aa4b2; --glass: rgba(255,255,255,0.04);
+      --gap:16px;
+      --radius:14px;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'El Messiri',system-ui,Arial;}
+    body{background:linear-gradient(180deg,#071022 0%, #071827 60%);color:#ecf2f8;padding:24px}
+
+    .container{max-width:1200px;margin:0 auto}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:68px;height:68px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffb36b);display:grid;place-items:center;font-weight:700;color:#071827}
+    .title{line-height:1}
+    .title h1{margin:0;font-size:20px}
+    .title p{margin:0;color:var(--muted);font-size:13px}
+
+    /* Controls */
+    .controls{display:flex;gap:10px;align-items:center}
+    .btn{background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#ffb36b);color:#071827;border:none}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-bottom:20px}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,0.03)}
+    .services{font-size:15px;color:var(--muted);margin-top:8px}
+
+    /* Filters */
+    .filters{display:flex;gap:10px;margin-bottom:12px}
+
+    /* Gallery grid */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--gap)}
+    .card{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;background:#071427;border:1px solid rgba(255,255,255,0.03);transition:transform .25s ease,box-shadow .25s}
+    .card:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .thumb{display:block;width:100%;height:160px;object-fit:cover}
+    .meta{padding:10px;font-size:13px;color:var(--muted)}
+    .type-badge{position:absolute;left:10px;top:10px;background:rgba(0,0,0,0.45);padding:6px 8px;border-radius:8px;font-size:12px}
+
+    /* Modal / Lightbox */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,23,0.85),rgba(2,6,23,0.95));z-index:999}
+    .lightbox.show{display:flex}
+    .viewer{max-width:1100px;width:calc(100% - 48px);background:rgba(8,12,20,0.6);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
+    .viewer-media{height:640px;display:grid;place-items:center;overflow:hidden;border-radius:8px;background:#000}
+    .viewer-media img, .viewer-media video{max-width:100%;max-height:100%;object-fit:contain}
+    .viewer-controls{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:10px}
+    .thumbs{display:flex;gap:8px;overflow:auto;padding:6px;margin-top:10px}
+    .thumbs img{width:84px;height:56px;object-fit:cover;border-radius:8px;opacity:.7;cursor:pointer}
+    .thumbs img.active{outline:3px solid var(--accent);opacity:1}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .viewer-media{height:56vh}
+    }
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .center{text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="title">
+          <h1>أبو فهمي للمقاولات العامة</h1>
+          <br>
+          <p class="muted">دهانات · ديكور · ترميم</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="filterAll">الكل</button>
+        <button class="btn" id="filterImages">صور</button>
+        <button class="btn" id="filterVideos">فيديو</button>
+        <button class="btn primary" id="openFirst">عرض السلايدر</button>
+              <button class="btn primary" onclick="window.open('https://wa.me/0501704423?text=مرحبا، أريد الاستفسار عن الخدمات','_blank')">تواصل واتساب</button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-card">
+        <h2>معرض أعمال احترافي وتفاعلي</h2>
+        <p class="services">عرض للصور ومقاطع الفيديو لمشاريع الدهانات والديكور والترميم مع إمكانية التكبير، تشغيل الفيديو داخل نافذة، وسلايدر تفاعلي.</p>
+
+        <div style="margin-top:14px">
+          <strong>مميزات:</strong>
+          <ul style="margin:8px 0 0 16px;padding:0;color:var(--muted)">
+            <li>عرض شبكي متجاوب مع تأثيرات حركة.</li>
+            <li>نافذة تكبير (lightbox) تدعم الصور والفيديو.</li>
+            <li>تحكم بالأسهم، مفاتيح لوحة المفاتيح، ودعم اللمس.</li>
+            <li>دعم lazy-loading للصور ومقاطع الفيديو.</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="hero-card center">
+        <h3 style="margin:0">اتصل الآن</h3>
+        <p class="muted" style="margin:8px 0">0501704423</p>
+        <p class="muted" style="font-size:13px;margin:10px 0">زور معرضنا لمشاهدة أفضل الأعمال</p>
+        <button class="btn primary" onclick="document.getElementById('filterImages').click()">مشاهدة الصور</button>
+      </aside>
+    </div>
+
+    <div class="filters" style="align-items:center">
+      <input id="searchInput" placeholder="ابحث بعنوان أو وصف..." style="padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit;flex:1">
+      <div class="muted">إضغط على عنصر لفتحه</div>
+    </div>
+
+    <section class="gallery" id="gallery">
+      <!--
+        استبدل src بأسماء ملفاتك أو مسارات الصور والفيديو الحقيقية.
+        type: "image" أو "video"، title: عنوان العنصر، src: رابط الملف
+      -->
+
+      <!-- مثال عناصر -->
+      <figure class="card" data-type="image" data-title="صالة دهانات حديثة">
+        <span class="type-badge">صورة</span>
+        <img class="thumb" loading="lazy" src="images/ph6.jpg" alt="صالة دهانات حديثة">
+        <figcaption class="meta">صالة دهانات حديثة</figcaption>
+      </figure>
+
+      <figure class="card" data-type="image" data-title="ترميم واجهات المنازل  ">
+        <span class="type-badge">صورة</span>
+        <img class="thumb" loading="lazy" src="images/ph5.jpg" alt="دهان جدران">       
+        <figcaption class="meta">دهان جدران كلاسيكي</figcaption>
+      </figure>
+            <figure class="card" data-type="image" data-title="ترميم واجهات المنازل  ">
+        <span class="type-badge">صورة</span>
+        <img class="thumb" loading="lazy" src="images/ph5.jpg" alt="دهان جدران">       
+        <figcaption class="meta">دهان جدران كلاسيكي</figcaption>
+      </figure>
+
+      <figure class="card" data-type="video" data-title="فيديو مشروع ترميم">
+        <span class="type-badge">فيديو</span>
+        <!-- thumbnail للفيديو -->
+        <img class="thumb" loading="lazy" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=ghi" alt="فيديو ترميم">
+        <figcaption class="meta">فيديو مشروع ترميم</figcaption>
+        <!-- تخزين رابط الفيديو في data-src -->
+        <div style="display:none" data-src="https://www.w3schools.com/html/mov_bbb.mp4"></div>
+      </figure>
+
+      <figure class="card" data-type="image" data-title="ديكورات بتصاميم عصرية ">
+        <span class="type-badge">صورة</span>
+        <img class="thumb" loading="lazy" src="images/ph7.jpg" alt="جبس بورد">
+        <figcaption class="meta">ديكورات بتصاميم عصرية</figcaption>
+      </figure>
+
+      <figure class="card" data-type="video" data-title="زوايا التصميم الداخلي">
+        <span class="type-badge">فيديو</span>
+        <img class="thumb" loading="lazy" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=mno" alt="فيديو داخلي">
+        <figcaption class="meta">زوايا التصميم الداخلي</figcaption>
+        <div style="display:none" data-src="https://www.w3schools.com/html/movie.mp4"></div>
+      </figure>
+
+    </section>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="viewer" role="dialog" aria-modal="true">
+      <div class="viewer-media" id="viewerMedia">
+        <!-- محتوى ديناميكي -->
+      </div>
+      <div class="viewer-controls">
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn" id="prevBtn">السابق</button>
+          <button class="btn" id="nextBtn">التالي</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div id="viewerTitle" class="muted"></div>
+           <button class="btn primary" onclick="window.open('https://wa.me/0501704423?text=مرحبا، أريد الاستفسار عن الخدمات','_blank')">تواصل واتساب</button>
+           <button class="btn" id="closeBtn">إغلاق</button>
+        </div>
+      </div>
+      <div class="thumbs" id="thumbStrip"></div>
+    </div>
+  </div>
+
+  <script>
+    // إعداد العناصر
+    const gallery = Array.from(document.querySelectorAll('#gallery .card'));
+    const lightbox = document.getElementById('lightbox');
+    const viewerMedia = document.getElementById('viewerMedia');
+    const thumbStrip = document.getElementById('thumbStrip');
+    const viewerTitle = document.getElementById('viewerTitle');
+    let currentIndex = 0;
+
+    // بناء الشريط المصغّر
+    function buildThumbs(items){
+      thumbStrip.innerHTML = '';
+      items.forEach((el, i)=>{
+        const img = el.querySelector('.thumb').cloneNode();
+        img.addEventListener('click', ()=>openAt(i));
+        img.classList.toggle('active', i===currentIndex);
+        thumbStrip.appendChild(img);
+      });
+    }
+
+    function openAt(index){
+      currentIndex = index;
+      const el = gallery[currentIndex];
+      showInViewer(el);
+      lightbox.classList.add('show');
+      lightbox.setAttribute('aria-hidden','false');
+      buildThumbs(gallery);
+      updateActiveThumb();
+    }
+
+    function showInViewer(el){
+      viewerMedia.innerHTML = '';
+      viewerTitle.textContent = el.dataset.title || '';
+      if(el.dataset.type === 'image'){
+        const img = document.createElement('img');
+        img.src = el.querySelector('.thumb').src;
+        img.alt = el.dataset.title || '';
+        img.loading = 'eager';
+        viewerMedia.appendChild(img);
+      } else if(el.dataset.type === 'video'){
+        const videoContainer = el.querySelector('[data-src]');
+        const src = videoContainer ? videoContainer.dataset.src : null;
+        const video = document.createElement('video');
+        video.controls = true; video.autoplay = true; video.playsInline = true; video.preload = 'metadata';
+        video.style.maxHeight = '100%';
+        if(src) video.src = src;
+        viewerMedia.appendChild(video);
+      }
+    }
+
+    function updateActiveThumb(){
+      Array.from(thumbStrip.children).forEach((t,i)=>{
+        t.classList.toggle('active', i===currentIndex);
+      });
+    }
+
+    // فتح العنصر عند الضغط
+    gallery.forEach((card,i)=>{
+      card.addEventListener('click', ()=>openAt(i));
+    });
+
+    // أزرار التحكم
+    document.getElementById('closeBtn').addEventListener('click', ()=>{
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden','true');
+      viewerMedia.innerHTML = '';
+    });
+    document.getElementById('prevBtn').addEventListener('click', ()=>{
+      currentIndex = (currentIndex - 1 + gallery.length) % gallery.length; showInViewer(gallery[currentIndex]); updateActiveThumb();
+    });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{
+      currentIndex = (currentIndex + 1) % gallery.length; showInViewer(gallery[currentIndex]); updateActiveThumb();
+    });
+
+    // مفاتيح لوحة المفاتيح
+    document.addEventListener('keydown', (e)=>{
+      if(lightbox.classList.contains('show')){
+        if(e.key === 'ArrowLeft') document.getElementById('prevBtn').click();
+        if(e.key === 'ArrowRight') document.getElementById('nextBtn').click();
+        if(e.key === 'Escape') document.getElementById('closeBtn').click();
+      }
+    });
+
+    // فلتر الصور والفيديو
+    function applyFilter(type){
+      gallery.forEach(c=>{
+        if(type === 'all' || c.dataset.type === type) c.style.display = '';
+        else c.style.display = 'none';
+      });
+    }
+    document.getElementById('filterAll').addEventListener('click', ()=>applyFilter('all'));
+    document.getElementById('filterImages').addEventListener('click', ()=>applyFilter('image'));
+    document.getElementById('filterVideos').addEventListener('click', ()=>applyFilter('video'));
+
+    // زر فتح السلايدر عند العنصر الأول
+    document.getElementById('openFirst').addEventListener('click', ()=>openAt(0));
+
+    // البحث
+    document.getElementById('searchInput').addEventListener('input', (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      gallery.forEach(c=>{
+        const title = (c.dataset.title||'').toLowerCase();
+        c.style.display = title.includes(q) ? '' : 'none';
+      });
+    });
+
+    // دعم السحب (لمسات بسيطة)
+    let startX=null;
+    viewerMedia.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; });
+    viewerMedia.addEventListener('touchend', (e)=>{
+      if(!startX) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+      if(diff > 40) document.getElementById('prevBtn').click();
+      if(diff < -40) document.getElementById('nextBtn').click();
+      startX = null;
+    });
+
+    // تهيئة: بناء الشريط المصغّر من البداية
+    buildThumbs(gallery);
+
+    // Accessibility: اغلاق بالنقرة خارج الصندوق
+    lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) document.getElementById('closeBtn').click(); });
+
+    // إظهار العنصر الأول تلقائياً إذا رغب المستخدم
+    // (يمكن تعديله لإظهار عناصر ديناميكية)
+  </script>
+</body>
+</html>
