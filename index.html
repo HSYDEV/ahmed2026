@@ -68,6 +68,71 @@
     /* small helpers */
     .muted{color:var(--muted)}
     .center{text-align:center}
+    /*  📱 تحسين التصميم في الهواتف  */
+@media (max-width: 900px) {
+  body { padding: 12px; }
+
+  header {
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    width: 46%;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-card ul li {
+    font-size: 14px;
+  }
+
+  .viewer-media {
+    height: 55vh;    /* مناسب للموبايل */
+  }
+
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .thumb {
+    height: 120px;  /* أصغر للهواتف */
+  }
+}
+
+/* 📱 هواتف صغيرة جدًا */
+@media (max-width: 500px) {
+  .btn {
+    width: 100%;
+  }
+
+  .title h1 {
+    font-size: 18px;
+  }
+
+  .thumb {
+    height: 100px;
+  }
+
+  .viewer-media {
+    height: 50vh;
+  }
+
+  .meta {
+    font-size: 11px;
+  }
+}
+
   </style>
 </head>
 <body>
